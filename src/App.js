@@ -94,6 +94,7 @@ export default class App extends Component {
 					<Board
 						board={board}
 						onSquareClick={this.onSquareClick}
+						winSquares={winSquares}
 					/>
 				</div>
 				<div className="game-info">
