@@ -70,14 +70,24 @@ export default class App extends Component {
 	}
 
 	render() {
-		const { board, players, turn, moves, displayMoves } = this.state;
+		const { board, players, turn, moves, displayMoves, boardSize } = this.state;
 		const winSquares = calculateWinner(board);
-		const status = winSquares ? "Winner": "Next player";
+		const status = (()=>{
+			if(winSquares){
+				return `Winner: ${players[turn].name}(${players[turn].key})`
+			}
+			else if(moves.length === boardSize*boardSize){
+				return "DRAW";
+			}
+			else {
+				return `Next player: ${players[turn].name}(${players[turn].key})` 
+			}
+		})();
 		const renderMoves = () => {
 			return moves.map((move, index) => {
 				const desc = `Go to move #${index + 1} (${move.row}, ${move.col}, ${move.value})`
 				return (
-					<li key={index}>
+					<li key={`${move.row}-${move.col}`}>
 						<button 
 							onClick={() => this.jumpTo(index)} 
 							style={{
@@ -98,7 +108,7 @@ export default class App extends Component {
 					/>
 				</div>
 				<div className="game-info">
-					<div>{`${status}: ${players[turn].name}(${players[turn].key})`}</div>
+					<div>{status}</div>
 					<ol>
 						<li>
 							<button 
