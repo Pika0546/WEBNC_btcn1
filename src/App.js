@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import './App.css';
 import Board from './component/Board';
 import { DEFAULT_BOARD_SIZE } from './config/contants';
-import { convertMoveListToMatrix, createMatrix } from './utilities';
+import { calculateWinner, convertMoveListToMatrix, createMatrix } from './utilities';
 export default class App extends Component {
 	constructor(props) {
 		super(props);
@@ -29,7 +29,7 @@ export default class App extends Component {
 
 	onSquareClick = (pos) => {
 		this.setState((prev, props) => {
-			if (!prev.board[pos.row][pos.col].length) {
+			if (!prev.board[pos.row][pos.col].length && !calculateWinner(prev.board)) {
 				const newState = {
 					turn: (!prev.turn) << 0,
 					moves: [...prev.displayMoves, {
@@ -70,8 +70,8 @@ export default class App extends Component {
 	}
 
 	render() {
-
 		const { board, players, turn, moves } = this.state;
+		const status = calculateWinner(board) ? "Winner": "Next player";
 		const renderMoves = () => {
 			return moves.map((move, index) => {
 				const desc = `Go to move #${index + 1} (${move.row}, ${move.col}, ${move.value})`
@@ -91,7 +91,7 @@ export default class App extends Component {
 					/>
 				</div>
 				<div className="game-info">
-					<div>Next player: {`${players[turn].name}(${players[turn].key})`}</div>
+					<div>{`${status}: ${players[turn].name}(${players[turn].key})`}</div>
 					<ol>
 						<li>
 							<button onClick={() => this.jumpTo(-1)}>Go to game start</button>
