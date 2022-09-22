@@ -82,8 +82,8 @@ export const calculateWinner = (board) => {
             }
         }
         if(flag){
-            return true;
+            return lines[i];
         }
     }
-    return false;
+    return null;
 }
