@@ -87,3 +87,7 @@ export const calculateWinner = (board) => {
     }
     return null;
 }
+
+export const isEqualSquare = (square1, square2, checkValue) => {
+    return square1.row === square2.row && square1.col === square2.col && (checkValue ? square1.value === square2.value : true);
+}

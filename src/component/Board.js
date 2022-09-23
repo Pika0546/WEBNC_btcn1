@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+
+import Stack from "@mui/material/Stack"
+
 import Square from './Square'
 
 export default class Board extends Component {
@@ -6,10 +9,12 @@ export default class Board extends Component {
     render() {
         const {board, winSquares} = this.props;
         return (
-            <div>
+            <Stack 
+                direction="column"
+            >
                 {board.map((row, rowIndex) => {
                     return (
-                        <div key={rowIndex} className="board-row">
+                        <Stack direction="row" key={rowIndex}>
                             {row.map((value, colIndex) => {
                                 return (
                                     <Square
@@ -24,10 +29,10 @@ export default class Board extends Component {
                                     />
                                 )
                             })}
-                        </div>
+                        </Stack>
                     )
                 })}
-            </div>
+            </Stack>
         )
     }
 }
