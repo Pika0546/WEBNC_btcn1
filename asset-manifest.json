@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/WEBNC_btcn1/static/css/main.e50e0134.css",
+    "main.js": "/WEBNC_btcn1/static/js/main.635ccbab.js",
+    "index.html": "/WEBNC_btcn1/index.html",
+    "main.e50e0134.css.map": "/WEBNC_btcn1/static/css/main.e50e0134.css.map",
+    "main.635ccbab.js.map": "/WEBNC_btcn1/static/js/main.635ccbab.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e50e0134.css",
+    "static/js/main.635ccbab.js"
+  ]
+}
