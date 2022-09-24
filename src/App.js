@@ -31,6 +31,7 @@ export default class App extends Component {
 			board: createMatrix(DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE),
 			displayMoves: [],
 			isAsc: true,
+			selectedMove: undefined,
 		}
 	}
 
@@ -45,6 +46,7 @@ export default class App extends Component {
 						value: prev.players[prev.turn].key,
 						index: prev.displayMoves.length,
 					}],
+					selectedMove: undefined,
 				};
 				newState.board = convertMoveListToMatrix(newState.moves, prev.boardSize);
 				newState.displayMoves = [...newState.moves];
@@ -55,24 +57,27 @@ export default class App extends Component {
 	}
 
 	jumpTo = (step) => {
-		if(!step){
+
+		if (!step) {
 			this.setState(prev => ({
 				...prev,
 				displayMoves: [],
 				board: convertMoveListToMatrix([], prev.boardSize),
 				turn: 0,
+				selectedMove: null,
 			}))
 		}
-		else{
+		else {
 			this.setState(prev => {
 				const index = prev.moves.findIndex(move => isEqualSquare(move, step));
 				const turn = prev.players.findIndex(item => item.key === step.value);
-				if(index >= 0){
+				if (index >= 0) {
 					return {
 						...prev,
 						displayMoves: prev.moves.slice(0, index + 1),
 						board: convertMoveListToMatrix(prev.moves.slice(0, index + 1), prev.boardSize),
-						turn: (!turn) << 0,					
+						turn: (!turn) << 0,
+						selectedMove: step,
 					}
 				}
 				return {
@@ -95,41 +100,32 @@ export default class App extends Component {
 		this.setState(prev => ({
 			...prev,
 			boardSize: newSize,
-		}))
+		}));
+		this.jumpTo(null)
 	}
 
 	render() {
-		const { board, players, turn, moves, displayMoves, boardSize, isAsc } = this.state;
+		const {selectedMove, board, players, turn, moves, displayMoves, boardSize, isAsc } = this.state;
 		const winSquares = calculateWinner(board);
-		const status = (()=>{
-			if(winSquares){
-				return `Winner: ${players[turn].name}(${players[turn].key})`
-			}
-			else if(moves.length === boardSize*boardSize){
-				return "DRAW";
-			}
-			else {
-				return `Next player: ${players[turn].name}(${players[turn].key})` 
-			}
-		})();
 		return (
 			<Paper
 				sx={{
 					padding: 2,
 				}}
 			>
-				<Typography component={"h3"} variant={"h4"} textAlign="center">Tic-tac-toe</Typography>
+				<Typography component={"h3"} variant={"h4"} textAlign="center">Tic tac toe</Typography>
 				<Stack
 					direction="row"
 					marginTop={2}
 					spacing={2}
 				>
 					<Board
+						turn={turn}
 						board={board}
 						onSquareClick={this.onSquareClick}
 						winSquares={winSquares}
 					/>
-				
+
 					<GameInfo
 						winSquares={winSquares}
 						moves={moves}
@@ -137,29 +133,13 @@ export default class App extends Component {
 						players={players}
 						sortMoves={this.sortMoves}
 						isAsc={isAsc}
-						displayMoves={displayMoves}
 						jumpTo={this.jumpTo}
 						turn={turn}
+						changeBoardSize={this.changeBoardSize}
+						selectedMove={selectedMove}
 					/>
 				</Stack>
 			</Paper>
-		)
-		return (
-			<div className="game">
-				<div className="game-board">
-					<Board
-						board={board}
-						onSquareClick={this.onSquareClick}
-						winSquares={winSquares}
-					/>
-				</div>
-				<div className="game-info">
-					<div>{status}</div>
-					<button onClick={this.sortMoves}>sort</button>
-					
-					<MoveList isAsc={isAsc} moves={displayMoves} itemClick={this.jumpTo}></MoveList>
-				</div>
-			</div>
 		)
 	}
 }

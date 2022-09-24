@@ -1,3 +1,6 @@
+import ClearIcon from '@mui/icons-material/Clear';
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
+
 import { SQUARE_TO_WIN } from "./config/contants";
 
 export const createMatrix = (row, col) => {
@@ -90,4 +93,13 @@ export const calculateWinner = (board) => {
 
 export const isEqualSquare = (square1, square2, checkValue) => {
     return square1.row === square2.row && square1.col === square2.col && (checkValue ? square1.value === square2.value : true);
+}
+
+export const keyToIcon = (key) => {
+    if(key.toLowerCase() === 'x'){
+        return <ClearIcon sx={{color: "red"}}></ClearIcon>
+    }
+    else if(key.toLowerCase() === 'o'){
+        return <RadioButtonUncheckedOutlinedIcon sx={{color: "blue"}}></RadioButtonUncheckedOutlinedIcon>
+    }
 }

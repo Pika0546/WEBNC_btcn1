@@ -6,6 +6,7 @@ import Zoom from "@mui/material/Zoom"
 import ClearIcon from '@mui/icons-material/Clear';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import { SQUARE_SIZE } from '../config/contants'
+import { keyToIcon } from '../utilities';
 export default class Square extends Component {
 
     render() {
@@ -23,18 +24,17 @@ export default class Square extends Component {
                     alignItems:'center',
                     minWidth: SQUARE_SIZE,
                     border: "1px solid #d2d2d2",
-                    ...(this.props.isWinSquare && {background: "yellow !important"})
+                    ...(this.props.isWinSquare && {background: "yellow !important"}),
+                    ...(!this.props.turn && {"&:hover":{
+                        background: "#ff00000f",
+                        borderColor: "#ff0000"
+                    }})
                 }}
                 disableTouchRipple
             >
-                {this.props.value === "X" && (
+                {this.props.value && (
                     <Zoom in={true}>
-                        <ClearIcon sx={{fontSize: "2rem", color: "red"}}/>
-                    </Zoom>
-                )}
-                {this.props.value === "O" && (
-                    <Zoom in={true}>
-                        <RadioButtonUncheckedOutlinedIcon sx={{fontSize: "2rem", color: "blue"}}/>
+                        {keyToIcon(this.props.value)}
                     </Zoom>
                 )}
             </Button>

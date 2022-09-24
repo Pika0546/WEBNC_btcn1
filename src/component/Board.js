@@ -7,7 +7,7 @@ import Square from './Square'
 export default class Board extends Component {
 
     render() {
-        const {board, winSquares} = this.props;
+        const {board, winSquares, turn} = this.props;
         return (
             <Stack 
                 direction="column"
@@ -18,6 +18,7 @@ export default class Board extends Component {
                             {row.map((value, colIndex) => {
                                 return (
                                     <Square
+                                        turn={turn}
                                         isWinSquare={winSquares && winSquares.find(item => item.row === rowIndex && item.col === colIndex)}
                                         pos={{
                                             row: rowIndex,

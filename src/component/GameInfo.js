@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import ClearIcon from '@mui/icons-material/Clear';
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import IconButton from '@mui/material/IconButton';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import MoveList from './MoveList';
+import { keyToIcon } from '../utilities';
+import GameSetting from './GameSetting';
 
 export default class GameInfo extends Component {
 	render() {
@@ -15,19 +21,57 @@ export default class GameInfo extends Component {
 			players,
 			sortMoves,
 			isAsc,
-			displayMoves,
 			jumpTo,
 			turn,
+			changeBoardSize,
+			selectedMove
 		} = this.props;
 		const status = (() => {
 			if (winSquares) {
-				return `${players[turn].name}(${players[turn].key}) đã thắng!!!`
+				return (
+					<Stack
+						direction="row"
+						alignItems="center"
+						justifyContent="center"
+						spacing={1}
+						sx={{
+							fontSize: "1.2rem"
+						}}
+					>
+						{keyToIcon(players[(!turn) << 0].key)}
+						<Box>
+							đã thắng
+						</Box>
+					</Stack>
+				)
 			}
 			else if (moves.length === boardSize * boardSize) {
-				return "HÒA!!!";
+				return (
+					<Box
+						sx={{
+							fontSize: "1.2rem"
+						}}>
+						đã thắng
+					</Box>
+				)
 			}
 			else {
-				return `Lượt của: ${players[turn].name}(${players[turn].key})`
+				return (
+					<Stack
+						direction="row"
+						alignItems="center"
+						justifyContent="center"
+						spacing={1}
+						sx={{
+							fontSize: "1.2rem"
+						}}
+					>
+						<Box>
+							Lượt của
+						</Box>
+						{keyToIcon(players[turn].key)}
+					</Stack>
+				)
 			}
 		})();
 		return (
@@ -37,7 +81,7 @@ export default class GameInfo extends Component {
 					flex: '1 1 auto',
 					flexDirection: "column",
 					alignSelf: 'stretch',
-					width: "200px",
+					width: "230px",
 				}}
 			>
 				<Box
@@ -49,6 +93,7 @@ export default class GameInfo extends Component {
 					sx={{
 						flex: "1 1 auto",
 						marginTop: "1rem",
+						marginBottom: "1rem",
 						display: "flex",
 						flexDirection: "column",
 					}}
@@ -60,11 +105,15 @@ export default class GameInfo extends Component {
 							padding: "0.5rem",
 							display: "flex",
 							flexDirection: "row",
-							alignItems:"center",
-							justifyContent:"center",
+							alignItems: "center",
+							justifyContent: "center",
 						}}
 					>
-						Danh sách lượt
+						<Typography component="p"
+							sx={{
+								fontWeight: "bold"
+							}}
+						> Danh sách nước đi </Typography>
 						<IconButton
 							sx={{
 								marginLeft: "0.5rem",
@@ -74,7 +123,7 @@ export default class GameInfo extends Component {
 							<ArrowUpwardIcon
 								sx={{
 									transition: ".2s",
-									...(!isAsc && {transform: "rotate(180deg)"})
+									...(!isAsc && { transform: "rotate(180deg)" })
 								}}
 							></ArrowUpwardIcon>
 						</IconButton>
@@ -83,7 +132,7 @@ export default class GameInfo extends Component {
 						sx={{
 							flex: "1 1 auto",
 							position: "relative",
-							
+
 						}}
 					>
 						<Box
@@ -95,14 +144,16 @@ export default class GameInfo extends Component {
 							}}
 						>
 							<MoveList
-								moves={displayMoves}
+								moves={moves}
 								itemClick={jumpTo}
 								isAsc={isAsc}
+								selectedMove={selectedMove}
 							></MoveList>
 						</Box>
 					</Box>
 
 				</Paper>
+				<GameSetting applySetting={changeBoardSize}></GameSetting>
 			</Box>
 		)
 	}
